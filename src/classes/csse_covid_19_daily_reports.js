@@ -1,3 +1,4 @@
+export const URL_GITHUB_CSSE_COVID_19_DAILY_REPORTS ="https://github.com/CSSEGISandData/COVID-19";
 export const URL_CSSE_COVID_19_DAILY_REPORTS =
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/";
 

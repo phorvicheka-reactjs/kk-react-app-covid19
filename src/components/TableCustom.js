@@ -10,11 +10,8 @@ import TableCustomBody from "./TableCustomBody";
 
 const useStyles = makeStyles({
     table: {
+        marginTop: 20,
         minWidth: 650
-    },
-    formControl: {
-        margin: 50,
-        minWidth: 250
     }
 });
 

@@ -9,7 +9,8 @@ import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles({
     formControl: {
-        margin: 50,
+        marginTop: 50,
+        marginBottom: 20,
         minWidth: 250
     }
 });
@@ -31,7 +32,7 @@ const SelectCustom = ({
                 value={selectedCountryOrRegion}
                 onChange={handleChange}
             >
-                <MenuItem value="">
+                <MenuItem value="ALL">
                     <em>ALL</em>
                 </MenuItem>
                 {arrayCountryOrRegion.length !== 0
