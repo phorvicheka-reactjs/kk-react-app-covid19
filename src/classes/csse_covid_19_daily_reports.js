@@ -21,17 +21,18 @@ export const COLUMN_NAME_LONGTITUDE = "Longitude";
 
 export class CsseCovid19DailyReportsUtils {
     static getArrayCountryOrRegion(data) {
-        return data
-            ? new Set(
-                  data.map(value => {
-                      return value[COLUMN_NAME_COUNTRY_OR_REGION];
-                  })
-              )
+        let out = data.length !== 0
+            ? data.map(value => {
+                  return value[COLUMN_NAME_COUNTRY_OR_REGION];
+              })
             : [];
+        out = Array.from(new Set(out));
+
+        return out;
     }
 
     static getDataGroupByCountryOrRegion(data) {
-        let arrayDataByCountryOrRegion = [];
+        let arrayDataGroupByCountryOrRegion = [];
         let arrayCountryOrRegion = CsseCovid19DailyReportsUtils.getArrayCountryOrRegion(
             data
         );
@@ -54,9 +55,9 @@ export class CsseCovid19DailyReportsUtils {
                 [COLUMN_NAME_DEATHS]: deaths,
                 [COLUMN_NAME_RECOVERED]: recovered
             };
-            arrayDataByCountryOrRegion.push(dataCountryOrRegion);
+            arrayDataGroupByCountryOrRegion.push(dataCountryOrRegion);
         });
 
-        return { arrayCountryOrRegion, arrayDataByCountryOrRegion };
+        return { arrayCountryOrRegion, arrayDataGroupByCountryOrRegion };
     }
 }

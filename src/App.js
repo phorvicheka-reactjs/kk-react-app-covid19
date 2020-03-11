@@ -2,32 +2,40 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 import Papa from "papaparse";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import TableCustom from "./components/TableCustom";
+import SelectCustom from "./components/SelectCustom";
 import {
     URL_CSSE_COVID_19_DAILY_REPORTS,
+    COLUMN_NAME_COUNTRY_OR_REGION,
     CsseCovid19DailyReportsUtils
 } from "../src/classes/csse_covid_19_daily_reports";
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650
-    }
-});
-
 const App = () => {
+    /* const classes = useStyles(); */
     const [data, setData] = useState([]);
+    const [arrayCountryOrRegion, setArrayCountryOrRegion] = useState([]);
+    const [
+        arrayDataGroupByCountryOrRegion,
+        setArrayDataGroupByCountryOrRegion
+    ] = useState([]);    
+    const [
+        selectedCountryOrRegion,
+        setSelectedCountryOrRegion
+    ] = React.useState("");
+    const [
+        arrayDataBySelectedCountryOrRegion,
+        setArrayDataBySelectedCountryOrRegion
+    ] = useState([]);
+
+    const handleChange = event => {
+        setSelectedCountryOrRegion(event.target.value);
+    };
 
     useEffect(() => {
-        Papa.parse(`${URL_CSSE_COVID_19_DAILY_REPORTS}03-19-2020.csv`, {
+        Papa.parse(`${URL_CSSE_COVID_19_DAILY_REPORTS}03-09-2020.csv`, {
             download: true,
             header: true,
+            skipEmptyLines: true,
             // rest of config ...
             error: function(err, file, inputElem, reason) {
                 // executed if an error occurs while loading the file,
@@ -44,55 +52,45 @@ const App = () => {
     useEffect(() => {
         const {
             arrayCountryOrRegion,
-            arrayDataByCountryOrRegion
+            arrayDataGroupByCountryOrRegion
         } = CsseCovid19DailyReportsUtils.getDataGroupByCountryOrRegion(data);
         console.log("Countries: ", arrayCountryOrRegion);
         console.log(
             "Array Data By Country Or Region: ",
-            arrayDataByCountryOrRegion
+            arrayDataGroupByCountryOrRegion
         );
+        setArrayCountryOrRegion(arrayCountryOrRegion);
+        setArrayDataGroupByCountryOrRegion(arrayDataGroupByCountryOrRegion);
+        setArrayDataBySelectedCountryOrRegion(arrayDataGroupByCountryOrRegion);
     }, [data]);
 
-    const classes = useStyles();
+    useEffect(() => {
+        if (selectedCountryOrRegion !== "") {
+            setArrayDataBySelectedCountryOrRegion(arrayDataGroupByCountryOrRegion.filter(
+                value => {
+                    return (
+                        value[COLUMN_NAME_COUNTRY_OR_REGION] ===
+                        selectedCountryOrRegion
+                    );
+                }
+            ));
+        } else {
+            setArrayDataBySelectedCountryOrRegion(arrayDataGroupByCountryOrRegion);
+        }
+    }, [selectedCountryOrRegion, arrayDataGroupByCountryOrRegion]);
 
     return (
         <div className="App">
-            <TableContainer component={Paper}>
-                <Table
-                    className={classes.table}
-                    size="small"
-                    aria-label="simple table"
-                >
-                    <TableHead>
-                        <TableRow>
-                            {data.length !== 0
-                                ? Object.keys(data[0]).map((value, index) => {
-                                      return (
-                                          <TableCell key={index}>
-                                              {value}
-                                          </TableCell>
-                                      );
-                                  })
-                                : null}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.length !== 0
-                            ? data.map((value, index) => {
-                                  const row = [];
-                                  for (const index of Object.keys(value)) {
-                                      row.push(
-                                          <TableCell align="left" key={index}>
-                                              {value[index]}
-                                          </TableCell>
-                                      );
-                                  }
-                                  return <TableRow key={index}>{row}</TableRow>;
-                              })
-                            : null}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <SelectCustom
+                selectedCountryOrRegion={selectedCountryOrRegion}
+                handleChange={handleChange}
+                arrayCountryOrRegion={arrayCountryOrRegion}
+            ></SelectCustom>
+            <TableCustom
+                arrayDataGroupByCountryOrRegion={
+                    arrayDataBySelectedCountryOrRegion
+                }
+            />
         </div>
     );
 };
