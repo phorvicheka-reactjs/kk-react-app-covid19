@@ -19,49 +19,44 @@ export const COLUMN_NAME_RECOVERED = "Recovered";
 export const COLUMN_NAME_LATITUDE = "Latitude";
 export const COLUMN_NAME_LONGTITUDE = "Longitude";
 
-export const getArrayCountryOrRegion = data => {
-    return data
-        ? new Set(
-              data.map(value => {
-                  return value[COLUMN_NAME_COUNTRY_OR_REGION];
-              })
-          )
-        : [];
-};
-
-export const getArrayDataByCountryOrRegion = (
-    data,
-    arrayCountryOrRegion = []
-) => {
-    if (arrayCountryOrRegion.length === 0) {
-        arrayCountryOrRegion = getArrayCountryOrRegion(data);
+export class CsseCovid19DailyReportsUtils {
+    static getArrayCountryOrRegion(data) {
+        return data
+            ? new Set(
+                  data.map(value => {
+                      return value[COLUMN_NAME_COUNTRY_OR_REGION];
+                  })
+              )
+            : [];
     }
 
-    let arrayDataByCountryOrRegion = [];
-    arrayCountryOrRegion.forEach(countryOrRegion => {
-        let confirmed = 0;
-        let deaths = 0;
-        let recovered = 0;
-        let dataCountryOrRegion = {};
-        data.forEach(value => {
-            if (value[Object.keys(value)[1]] === countryOrRegion) {
-                confirmed += Number(value[COLUMN_NAME_CONFIRMED]);
-                deaths += Number(value[COLUMN_NAME_DEATHS]);
-                recovered += Number(value[COLUMN_NAME_RECOVERED]);
-            }
+    static getDataGroupByCountryOrRegion(data) {
+        let arrayDataByCountryOrRegion = [];
+        let arrayCountryOrRegion = CsseCovid19DailyReportsUtils.getArrayCountryOrRegion(
+            data
+        );
+
+        arrayCountryOrRegion.forEach(countryOrRegion => {
+            let confirmed = 0;
+            let deaths = 0;
+            let recovered = 0;
+            let dataCountryOrRegion = {};
+            data.forEach(value => {
+                if (value[Object.keys(value)[1]] === countryOrRegion) {
+                    confirmed += Number(value[COLUMN_NAME_CONFIRMED]);
+                    deaths += Number(value[COLUMN_NAME_DEATHS]);
+                    recovered += Number(value[COLUMN_NAME_RECOVERED]);
+                }
+            });
+            dataCountryOrRegion = {
+                [COLUMN_NAME_COUNTRY_OR_REGION]: countryOrRegion,
+                [COLUMN_NAME_CONFIRMED]: confirmed,
+                [COLUMN_NAME_DEATHS]: deaths,
+                [COLUMN_NAME_RECOVERED]: recovered
+            };
+            arrayDataByCountryOrRegion.push(dataCountryOrRegion);
         });
-        dataCountryOrRegion = {
-            [COLUMN_NAME_COUNTRY_OR_REGION]: countryOrRegion,
-            [COLUMN_NAME_CONFIRMED]: confirmed,
-            [COLUMN_NAME_DEATHS]: deaths,
-            [COLUMN_NAME_RECOVERED]: recovered
-        };
-        arrayDataByCountryOrRegion.push(dataCountryOrRegion);
-    });
 
-    return arrayDataByCountryOrRegion;
-};
-
-export class CsseCovid19DailyReports {
-    // TODO
+        return { arrayCountryOrRegion, arrayDataByCountryOrRegion };
+    }
 }

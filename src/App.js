@@ -12,8 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import {
     URL_CSSE_COVID_19_DAILY_REPORTS,
-    getArrayCountryOrRegion,
-    getArrayDataByCountryOrRegion
+    CsseCovid19DailyReportsUtils
 } from "../src/classes/csse_covid_19_daily_reports";
 
 const useStyles = makeStyles({
@@ -23,16 +22,17 @@ const useStyles = makeStyles({
 });
 
 const App = () => {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        Papa.parse(`${URL_CSSE_COVID_19_DAILY_REPORTS}03-09-2020.csv`, {
+        Papa.parse(`${URL_CSSE_COVID_19_DAILY_REPORTS}03-19-2020.csv`, {
             download: true,
             header: true,
             // rest of config ...
             error: function(err, file, inputElem, reason) {
                 // executed if an error occurs while loading the file,
                 // or if before callback aborted for some reason
+                console.log(err);
             },
             complete: function(results) {
                 console.log("Finished:", results.data);
@@ -42,13 +42,11 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        const arrayCountryOrRegion = getArrayCountryOrRegion(data);
+        const {
+            arrayCountryOrRegion,
+            arrayDataByCountryOrRegion
+        } = CsseCovid19DailyReportsUtils.getDataGroupByCountryOrRegion(data);
         console.log("Countries: ", arrayCountryOrRegion);
-
-        const arrayDataByCountryOrRegion = getArrayDataByCountryOrRegion(
-            data
-            //arrayCountryOrRegion
-        );
         console.log(
             "Array Data By Country Or Region: ",
             arrayDataByCountryOrRegion
@@ -67,7 +65,7 @@ const App = () => {
                 >
                     <TableHead>
                         <TableRow>
-                            {data
+                            {data.length !== 0
                                 ? Object.keys(data[0]).map((value, index) => {
                                       return (
                                           <TableCell key={index}>
@@ -79,7 +77,7 @@ const App = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data
+                        {data.length !== 0
                             ? data.map((value, index) => {
                                   const row = [];
                                   for (const index of Object.keys(value)) {
