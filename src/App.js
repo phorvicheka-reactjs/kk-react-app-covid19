@@ -205,20 +205,33 @@ const App = () => {
                     Data Repository by Johns Hopkins CSSE
                 </Link>
             </Alert>
-            <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                    <GridCustom objectData={userCountryData} isUserCountry />
+            {arrayDataBySelectedCountryOrRegion.length !== 0 && (
+                <Grid container>
+                    <Grid item xs={12} md={6}>
+                        <GridCustom
+                            objectData={userCountryData}
+                            isUserCountry
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <GridCustom objectData={worldData} />
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <GridCustom objectData={worldData} />
-                </Grid>
-            </Grid>
+            )}
+            <div style={{height: 5, marginTop: 20, backgroundColor: "lightgray"}}>
+            </div>            
             <div>
+                <h2 style={{marginBottom: 0}}>DATE: {formatDate(selectedDay, "MM-DD-YYYY")}</h2>
+                <DayPickerInputCustom
+                    handleBackButtonOnClick={handleBackButtonOnClick}
+                    handleDayChange={handleDayChange}
+                    selectedDay={selectedDay}
+                    handleForwardButtonOnClick={handleForwardButtonOnClick}
+                />
                 <Autocomplete
                     style={{
                         width: 250,
-                        marginTop: 50,
-                        marginBottom: 10,
+                        marginBottom: 30,
                         display: "inline-block"
                     }}
                     size="medium"
@@ -239,12 +252,6 @@ const App = () => {
                             variant="outlined"
                         />
                     )}
-                />
-                <DayPickerInputCustom
-                    handleBackButtonOnClick={handleBackButtonOnClick}
-                    handleDayChange={handleDayChange}
-                    selectedDay={selectedDay}
-                    handleForwardButtonOnClick={handleForwardButtonOnClick}
                 />
             </div>
 
