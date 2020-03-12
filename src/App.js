@@ -142,11 +142,10 @@ const App = () => {
 
     useEffect(() => {
         axios
-            .get("http://ip-api.com/json/")
+            .get("https://api.ipdata.co/?api-key=test")
             .then(response => {
                 let data = response.data;
-
-                const userCountryName = data.country;
+                const userCountryName = data.country_name;
                 setUserCountryName(userCountryName);
                 if (selectedCountryOrRegion === "") {
                     if (arrayCountryOrRegion.indexOf(userCountryName) !== -1) {
