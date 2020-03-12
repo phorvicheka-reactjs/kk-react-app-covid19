@@ -191,9 +191,6 @@ const App = () => {
                         userCountryName
                     ) !== -1
                 ) {
-                    iterator[COLUMN_NAME_COUNTRY_OR_REGION] =
-                        "You are in: " +
-                        iterator[COLUMN_NAME_COUNTRY_OR_REGION].toUpperCase();
                     setUserCountryData(iterator);
                     break;
                 }
@@ -211,7 +208,7 @@ const App = () => {
             </Alert>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
-                    <GridCustom objectData={userCountryData} />
+                    <GridCustom objectData={userCountryData} isUserCountry />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <GridCustom objectData={worldData} />

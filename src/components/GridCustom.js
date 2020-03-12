@@ -29,22 +29,27 @@ const useStyles = makeStyles({
     }
 });
 
-const GridCustom = ({ objectData }) => {
+const GridCustom = ({ objectData, isUserCountry }) => {
     const classes = useStyles();
     return (
         <Paper>
             {objectData != null
-                ? Object.keys(objectData).map(function(key, index) {                      
-                    if (index === 0) {
+                ? Object.keys(objectData).map(function(key, index) {
+                      if (index === 0) {
                           return (
-                              <Typography                                
+                              <Typography
                                   variant="h5"
                                   component="h2"
                                   gutterBottom
                                   color="primary"
-                                  key={`${objectData[Object.keys(objectData)[0]]}_${index}`}
+                                  key={`${
+                                      objectData[Object.keys(objectData)[0]]
+                                  }_${index}`}
                               >
-                                  {objectData[key]}
+                                  {isUserCountry
+                                      ? "You are in: " +
+                                        objectData[key].toUpperCase()
+                                      : objectData[key].toUpperCase()}
                                   <Divider />
                               </Typography>
                           );
@@ -58,7 +63,14 @@ const GridCustom = ({ objectData }) => {
                               classSurfix = "__recovered";
                           }
                           return (
-                              <Grid key={`${objectData[Object.keys(objectData)[0]]}_${index}`} container spacing={2} alignItems="center">
+                              <Grid
+                                  key={`${
+                                      objectData[Object.keys(objectData)[0]]
+                                  }_${index}`}
+                                  container
+                                  spacing={2}
+                                  alignItems="center"
+                              >
                                   <Grid item xs={6} align="end">
                                       {key} :
                                   </Grid>
