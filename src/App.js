@@ -3,7 +3,6 @@ import "./App.css";
 
 import Papa from "papaparse";
 import TableCustom from "./components/TableCustom";
-import SelectCustom from "./components/SelectCustom";
 import {
     URL_GITHUB_CSSE_COVID_19_DAILY_REPORTS,
     URL_CSSE_COVID_19_DAILY_REPORTS,
@@ -21,6 +20,8 @@ import DayPickerInputCustom from "./components/DayPickerInputCustom";
 import { formatDate } from "react-day-picker/moment";
 import Grid from "@material-ui/core/Grid";
 import GridCustom from "./components/GridCustom";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const App = () => {
     const [data, setData] = useState([]);
@@ -35,7 +36,7 @@ const App = () => {
     const [
         selectedCountryOrRegion,
         setSelectedCountryOrRegion
-    ] = React.useState("");
+    ] = React.useState("ALL");
     const [
         selectedCountryOrRegionData,
         setSelectedCountryOrRegionData
@@ -48,8 +49,8 @@ const App = () => {
         new Date(new Date().setDate(new Date().getDate() - 1))
     );
 
-    const handleSelectChange = event => {
-        setSelectedCountryOrRegion(event.target.value);
+    const handleAutocompleteSelectChange = (event, value) => {
+        setSelectedCountryOrRegion(value != null ? value : "ALL");
     };
 
     const handleDayChange = selectedDay => {
@@ -190,7 +191,9 @@ const App = () => {
                         userCountryName
                     ) !== -1
                 ) {
-                    iterator[COLUMN_NAME_COUNTRY_OR_REGION] = 'You are in: ' + iterator[COLUMN_NAME_COUNTRY_OR_REGION].toUpperCase();
+                    iterator[COLUMN_NAME_COUNTRY_OR_REGION] =
+                        "You are in: " +
+                        iterator[COLUMN_NAME_COUNTRY_OR_REGION].toUpperCase();
                     setUserCountryData(iterator);
                     break;
                 }
@@ -215,10 +218,31 @@ const App = () => {
                 </Grid>
             </Grid>
             <div>
-                <SelectCustom
-                    selectedCountryOrRegion={selectedCountryOrRegion}
-                    handleChange={handleSelectChange}
-                    arrayCountryOrRegion={arrayCountryOrRegion}
+                <Autocomplete
+                    style={{
+                        width: 250,
+                        marginTop: 50,
+                        marginBottom: 10,
+                        display: "inline-block"
+                    }}
+                    size="medium"
+                    autoSelect
+                    autoHighlight
+                    onChange={handleAutocompleteSelectChange}
+                    options={(() => {
+                        if (!arrayCountryOrRegion.includes("ALL")) {
+                            arrayCountryOrRegion.unshift("ALL");
+                        }
+                        return arrayCountryOrRegion;
+                    })()}
+                    renderInput={params => (
+                        <TextField
+                            {...params}
+                            label="Select Country/Region"
+                            margin="normal"
+                            variant="outlined"
+                        />
+                    )}
                 />
                 <DayPickerInputCustom
                     handleBackButtonOnClick={handleBackButtonOnClick}
@@ -249,7 +273,7 @@ const App = () => {
                     />
                 ) : (
                     <h3>NO DATA</h3>
-                ))}            
+                ))}
         </div>
     );
 };
