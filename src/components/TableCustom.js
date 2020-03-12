@@ -9,16 +9,20 @@ import TableCustomHead from "./TableCustomHead";
 import TableCustomBody from "./TableCustomBody";
 
 const useStyles = makeStyles({
-    table: {
+    tableContainer: {
+        padding: "0 50px",
+        boxSizing: "border-box"
+    },
+    table: {        
         marginTop: 20,
         minWidth: 650
-    }
+    },
 });
 
 const TableCustom = ({ arrayDataGroupByCountryOrRegion }) => {
     const classes = useStyles();
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.tableContainer}>
             <Table
                 className={classes.table}
                 size="small"

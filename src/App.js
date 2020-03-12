@@ -10,19 +10,15 @@ import {
     COLUMN_NAME_COUNTRY_OR_REGION,
     CsseCovid19DailyReportsUtils
 } from "../src/classes/csse_covid_19_daily_reports";
-import DayPickerInput from "react-day-picker/DayPickerInput";
-import "react-day-picker/lib/style.css";
 import Divider from "@material-ui/core/Divider";
 import axios from "axios";
-import Alert from '@material-ui/lab/Alert';
-import Link from '@material-ui/core/Link';
-import {
-    formatDate,
-    parseDate
-} from "react-day-picker/moment";
+import Alert from "@material-ui/lab/Alert";
+import Link from "@material-ui/core/Link";
+import DayPickerInputCustom from "./components/DayPickerInputCustom";
+import { formatDate } from "react-day-picker/moment";
 
 const App = () => {
-    const [data, setData] = useState([]);    
+    const [data, setData] = useState([]);
     const [arrayCountryOrRegion, setArrayCountryOrRegion] = useState([]);
     const [
         arrayDataGroupByCountryOrRegion,
@@ -36,35 +32,48 @@ const App = () => {
         arrayDataBySelectedCountryOrRegion,
         setArrayDataBySelectedCountryOrRegion
     ] = useState([]);
-    const [selectedDay, setSelectedDay] = useState(new Date(new Date().setDate(new Date().getDate()-2)));
+    const [selectedDay, setSelectedDay] = useState(
+        new Date(new Date().setDate(new Date().getDate() - 1))
+    );
 
-
-    const handleChange = event => {
+    const handleSelectChange = event => {
         setSelectedCountryOrRegion(event.target.value);
     };
 
-    const handleDayChange = (selectedDay) => {
+    const handleDayChange = selectedDay => {
         setSelectedDay(selectedDay);
     };
 
-    const getCsvData = (selectedDay) => {
+    const handleBackButtonOnClick = event => {
+        const date = new Date(selectedDay);
+        setSelectedDay(date.setDate(date.getDate() - 1));
+    };
+
+    const handleForwardButtonOnClick = event => {
+        const date = new Date(selectedDay);
+        setSelectedDay(date.setDate(date.getDate() + 1));
+    };
+
+    const getCsvData = selectedDay => {
         const selectedDayString = formatDate(selectedDay, "MM-DD-YYYY");
-        Papa.parse(`${URL_CSSE_COVID_19_DAILY_REPORTS}${selectedDayString}.csv`, {
-            download: true,
-            header: true,
-            skipEmptyLines: true,
-            // rest of config ...
-            error: function(err, file, inputElem, reason) {
-                // executed if an error occurs while loading the file,
-                // or if before callback aborted for some reason
-                console.log(err);
-                setSelectedCountryOrRegion("ALL");
-                setData([]);
-            },
-            complete: function(results) {
-                setData(results.data);
+        Papa.parse(
+            `${URL_CSSE_COVID_19_DAILY_REPORTS}${selectedDayString}.csv`,
+            {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                // rest of config ...
+                error: function(err, file, inputElem, reason) {
+                    // executed if an error occurs while loading the file,
+                    // or if before callback aborted for some reason
+                    setSelectedCountryOrRegion("ALL");
+                    setData([]);
+                },
+                complete: function(results) {
+                    setData(results.data);
+                }
             }
-        });
+        );
     };
 
     useEffect(() => {
@@ -79,7 +88,23 @@ const App = () => {
 
         setArrayCountryOrRegion(arrayCountryOrRegion);
         setArrayDataGroupByCountryOrRegion(arrayDataGroupByCountryOrRegion);
-    }, [data]);
+        if (
+            selectedCountryOrRegion !== "" &&
+            arrayCountryOrRegion.indexOf(selectedCountryOrRegion) === -1
+        ) {
+            let modifiedSelectedCountryOrRegion = "ALL";
+            for (const iterator of arrayCountryOrRegion) {
+                if (
+                    iterator.includes(selectedCountryOrRegion) ||
+                    selectedCountryOrRegion.includes(iterator)
+                ) {
+                    modifiedSelectedCountryOrRegion = iterator;
+                    break;
+                }
+            }
+            setSelectedCountryOrRegion(modifiedSelectedCountryOrRegion);
+        }
+    }, [data, selectedCountryOrRegion]);
 
     useEffect(() => {
         axios
@@ -88,11 +113,14 @@ const App = () => {
                 let data = response.data;
 
                 const userCountryName = data.country;
-                if (arrayCountryOrRegion.indexOf(userCountryName) !== -1) {
-                    if(selectedCountryOrRegion === "")
-                        setSelectedCountryOrRegion(arrayCountryOrRegion[
-                            arrayCountryOrRegion.indexOf(userCountryName)
-                        ]);
+                if (selectedCountryOrRegion === "") {
+                    if (arrayCountryOrRegion.indexOf(userCountryName) !== -1) {
+                        setSelectedCountryOrRegion(
+                            arrayCountryOrRegion[
+                                arrayCountryOrRegion.indexOf(userCountryName)
+                            ]
+                        );
+                    }
                 }
             })
             .catch(error => {
@@ -122,30 +150,23 @@ const App = () => {
         <div className="App">
             <Alert severity="info">
                 <Link href={URL_GITHUB_CSSE_COVID_19_DAILY_REPORTS}>
-                    Data Source: 2019 Novel Coronavirus COVID-19 (2019-nCoV) Data Repository by Johns Hopkins CSSE
-                </Link>             
+                    Data Source: 2019 Novel Coronavirus COVID-19 (2019-nCoV)
+                    Data Repository by Johns Hopkins CSSE
+                </Link>
             </Alert>
             {selectedCountryOrRegion !== "" ? (
                 <div>
                     <SelectCustom
                         selectedCountryOrRegion={selectedCountryOrRegion}
-                        handleChange={handleChange}
+                        handleChange={handleSelectChange}
                         arrayCountryOrRegion={arrayCountryOrRegion}
                     />
-                    <div>
-                        <DayPickerInput
-                            dayPickerProps={{
-                                showWeekNumbers: true,
-                                todayButton: 'Today',
-                            }}
-                            onDayChange={handleDayChange}
-                            format = "MM-DD-YYYY"
-                            formatDate={formatDate}
-                            parseDate={parseDate}
-                            value={`${formatDate(selectedDay, "MM-DD-YYYY")}`}
-                            placeholder={`${formatDate(new Date(), "MM-DD-YYYY")}`}
-                        />
-                    </div>
+                    <DayPickerInputCustom
+                        handleBackButtonOnClick={handleBackButtonOnClick}
+                        handleDayChange={handleDayChange}
+                        selectedDay={selectedDay}
+                        handleForwardButtonOnClick={handleForwardButtonOnClick}
+                    />
                     <Divider />
                     {arrayDataBySelectedCountryOrRegion.length !== 0 ? (
                         <TableCustom

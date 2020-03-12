@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+
+td.tableCustomBody__tableCell {
+  font-size: large;
+}
+td.tableCustomBody__tableCell:not(:first-child) {
+  font-size: x-large;
+  font-weight: bold;
+}
+td.tableCustomBody__tableCell:nth-child(2) {
+  color: purple;
+}
+td.tableCustomBody__tableCell:nth-child(3) {
+  color: red;
+}
+td.tableCustomBody__tableCell:nth-child(4) {
+  color: green;
+}

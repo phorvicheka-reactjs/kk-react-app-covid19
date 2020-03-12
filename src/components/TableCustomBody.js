@@ -4,6 +4,13 @@ import PropTypes from "prop-types";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+/* import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+    tableCustomBody__tableCell: {
+        fontWeight: "bold"
+    }
+}); */
 
 const TableCustomBody = ({ arrayDataGroupByCountryOrRegion }) => {
     return (
@@ -13,7 +20,7 @@ const TableCustomBody = ({ arrayDataGroupByCountryOrRegion }) => {
                       const row = [];
                       for (const index of Object.keys(value)) {
                           row.push(
-                              <TableCell align="left" key={index}>
+                              <TableCell className="tableCustomBody__tableCell" align="left" key={index}>
                                   {value[index]}
                               </TableCell>
                           );

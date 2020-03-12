@@ -1,3 +1,13 @@
+TODO:
+----
+- Add Chip or Circle for data: Confirmed, Deaths, and Recovered
+- Get World's total data: Confirmed, Deaths, and Recovered
+- Check Styles and Responsibility with mobile
+- Get Country Flag
+- Add watched country to browser cache
+- Add international language supported
+- Add Graph data from date interval
+
 - Mastering Markdown \
     - https://guides.github.com/features/mastering-markdown/
 
@@ -15,6 +25,9 @@
     - https://medium.com/@andrewmyint/infinite-loop-inside-useeffect-react-hooks-6748de62871 \
     - https://www.andreasreiterer.at/react-useeffect-hook-loop/ \
     - https://stackoverflow.com/questions/53070970/infinite-loop-in-useeffect
+
+- When do I use functions in a Hooks Dependency Array? \
+    - https://reacttraining.com/blog/when-to-use-functions-in-hooks-dependency-array/
 
 - mui-org/material-ui \
     - https://github.com/mui-org/material-ui \
@@ -66,3 +79,19 @@
 
 - Calculate the date yesterday in JavaScript \
     - https://stackoverflow.com/questions/5511323/calculate-the-date-yesterday-in-javascript
+
+
+- Basic Javascript: Removing Duplicates from an Array \
+    - https://dev.to/mshin1995/back-to-basics-removing-duplicates-from-an-array-55he \
+    - https://javascript.info/map-set \
+    - https://codingblast.com/javascript-set-map/
+
+- JavaScript String includes() Method \
+    - https://www.w3schools.com/jsref/jsref_includes.asp
+
+- CSS naming convention: BEM approach \
+    - http://getbem.com/naming/
+
+- How to use styled components with Material UI in a React app \
+    - https://stackoverflow.com/questions/53768260/css-pseudo-selectors-with-material-ui \
+    - https://www.sipios.com/blog-tech/how-to-use-styled-components-with-material-ui-in-a-react-app

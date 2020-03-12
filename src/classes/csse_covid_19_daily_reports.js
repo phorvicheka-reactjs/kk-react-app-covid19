@@ -1,4 +1,5 @@
-export const URL_GITHUB_CSSE_COVID_19_DAILY_REPORTS ="https://github.com/CSSEGISandData/COVID-19";
+export const URL_GITHUB_CSSE_COVID_19_DAILY_REPORTS =
+    "https://github.com/CSSEGISandData/COVID-19";
 export const URL_CSSE_COVID_19_DAILY_REPORTS =
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/";
 
@@ -22,12 +23,14 @@ export const COLUMN_NAME_LONGTITUDE = "Longitude";
 
 export class CsseCovid19DailyReportsUtils {
     static getArrayCountryOrRegion(data) {
-        let out = data.length !== 0
-            ? data.map(value => {
-                  return value[COLUMN_NAME_COUNTRY_OR_REGION];
-              })
-            : [];
-        out = Array.from(new Set(out));
+        let out =
+            data.length !== 0
+                ? data.map(value => {
+                      return value[COLUMN_NAME_COUNTRY_OR_REGION];
+                  })
+                : [];
+        //out = Array.from(new Set(out));
+        out = CsseCovid19DailyReportsUtils.removeDuplicates(out);
 
         return out;
     }
@@ -44,7 +47,11 @@ export class CsseCovid19DailyReportsUtils {
             let recovered = 0;
             let dataCountryOrRegion = {};
             data.forEach(value => {
-                if (value[Object.keys(value)[1]] === countryOrRegion) {
+                if (
+                    value[Object.keys(value)[1]].includes(countryOrRegion) ||
+                    countryOrRegion.includes(value[Object.keys(value)[1]])
+                    //value[Object.keys(value)[1]] === countryOrRegion
+                ) {
                     confirmed += Number(value[COLUMN_NAME_CONFIRMED]);
                     deaths += Number(value[COLUMN_NAME_DEATHS]);
                     recovered += Number(value[COLUMN_NAME_RECOVERED]);
@@ -60,5 +67,14 @@ export class CsseCovid19DailyReportsUtils {
         });
 
         return { arrayCountryOrRegion, arrayDataGroupByCountryOrRegion };
+    }
+
+    static removeDuplicates(array) {
+        let a = [];
+        array.forEach(x => {
+            if (a.indexOf(x) === -1) a.push(x);
+        });
+
+        return a;
     }
 }
