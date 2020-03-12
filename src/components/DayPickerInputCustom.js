@@ -8,12 +8,16 @@ import { formatDate, parseDate } from "react-day-picker/moment";
 
 import "react-day-picker/lib/style.css";
 
-
-const DayPickerInputCustom = ({handleBackButtonOnClick, handleDayChange, selectedDay, handleForwardButtonOnClick}) => {
+const DayPickerInputCustom = ({
+    handleBackButtonOnClick,
+    handleDayChange,
+    selectedDay,
+    handleForwardButtonOnClick
+}) => {
     return (
         <div>
             <IconButton onClick={handleBackButtonOnClick}>
-                <ArrowBackIosOutlinedIcon fontSize="small" />
+                <ArrowBackIosOutlinedIcon fontSize="large" />
             </IconButton>
             <DayPickerInput
                 dayPickerProps={{
@@ -28,7 +32,7 @@ const DayPickerInputCustom = ({handleBackButtonOnClick, handleDayChange, selecte
                 placeholder={`${formatDate(new Date(), "MM-DD-YYYY")}`}
             />
             <IconButton onClick={handleForwardButtonOnClick}>
-                <ArrowForwardIosRoundedIcon fontSize="small" />
+                <ArrowForwardIosRoundedIcon fontSize="large" />
             </IconButton>
         </div>
     );

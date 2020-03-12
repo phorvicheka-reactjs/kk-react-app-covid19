@@ -8,6 +8,9 @@ import {
     URL_GITHUB_CSSE_COVID_19_DAILY_REPORTS,
     URL_CSSE_COVID_19_DAILY_REPORTS,
     COLUMN_NAME_COUNTRY_OR_REGION,
+    COLUMN_NAME_CONFIRMED,
+    COLUMN_NAME_DEATHS,
+    COLUMN_NAME_RECOVERED,
     CsseCovid19DailyReportsUtils
 } from "../src/classes/csse_covid_19_daily_reports";
 import Divider from "@material-ui/core/Divider";
@@ -16,9 +19,14 @@ import Alert from "@material-ui/lab/Alert";
 import Link from "@material-ui/core/Link";
 import DayPickerInputCustom from "./components/DayPickerInputCustom";
 import { formatDate } from "react-day-picker/moment";
+import Grid from "@material-ui/core/Grid";
+import GridCustom from "./components/GridCustom";
 
 const App = () => {
     const [data, setData] = useState([]);
+    const [userCountryName, setUserCountryName] = useState([]);
+    const [userCountryData, setUserCountryData] = useState({});
+    const [worldData, setWorldData] = useState({});
     const [arrayCountryOrRegion, setArrayCountryOrRegion] = useState([]);
     const [
         arrayDataGroupByCountryOrRegion,
@@ -27,6 +35,10 @@ const App = () => {
     const [
         selectedCountryOrRegion,
         setSelectedCountryOrRegion
+    ] = React.useState("");
+    const [
+        selectedCountryOrRegionData,
+        setSelectedCountryOrRegionData
     ] = React.useState("");
     const [
         arrayDataBySelectedCountryOrRegion,
@@ -86,8 +98,29 @@ const App = () => {
             arrayDataGroupByCountryOrRegion
         } = CsseCovid19DailyReportsUtils.getDataGroupByCountryOrRegion(data);
 
+        if (arrayDataGroupByCountryOrRegion.length !== 0) {
+            setWorldData(
+                arrayDataGroupByCountryOrRegion.reduce(
+                    (previousValue, currentValue) => {
+                        return {
+                            [COLUMN_NAME_COUNTRY_OR_REGION]: "GLOBAL",
+                            [COLUMN_NAME_CONFIRMED]:
+                                previousValue[COLUMN_NAME_CONFIRMED] +
+                                currentValue[COLUMN_NAME_CONFIRMED],
+                            [COLUMN_NAME_DEATHS]:
+                                previousValue[COLUMN_NAME_DEATHS] +
+                                currentValue[COLUMN_NAME_DEATHS],
+                            [COLUMN_NAME_RECOVERED]:
+                                previousValue[COLUMN_NAME_RECOVERED] +
+                                currentValue[COLUMN_NAME_RECOVERED]
+                        };
+                    }
+                )
+            );
+        }
         setArrayCountryOrRegion(arrayCountryOrRegion);
         setArrayDataGroupByCountryOrRegion(arrayDataGroupByCountryOrRegion);
+
         if (
             selectedCountryOrRegion !== "" &&
             arrayCountryOrRegion.indexOf(selectedCountryOrRegion) === -1
@@ -113,6 +146,7 @@ const App = () => {
                 let data = response.data;
 
                 const userCountryName = data.country;
+                setUserCountryName(userCountryName);
                 if (selectedCountryOrRegion === "") {
                     if (arrayCountryOrRegion.indexOf(userCountryName) !== -1) {
                         setSelectedCountryOrRegion(
@@ -130,14 +164,16 @@ const App = () => {
 
     useEffect(() => {
         if (selectedCountryOrRegion !== "") {
-            setArrayDataBySelectedCountryOrRegion(
-                arrayDataGroupByCountryOrRegion.filter(value => {
-                    return (
-                        value[COLUMN_NAME_COUNTRY_OR_REGION] ===
+            for (const iterator of arrayDataGroupByCountryOrRegion) {
+                if (
+                    iterator[COLUMN_NAME_COUNTRY_OR_REGION].indexOf(
                         selectedCountryOrRegion
-                    );
-                })
-            );
+                    ) !== -1
+                ) {
+                    setSelectedCountryOrRegionData(iterator);
+                    break;
+                }
+            }
         }
         if (selectedCountryOrRegion === "ALL") {
             setArrayDataBySelectedCountryOrRegion(
@@ -145,6 +181,22 @@ const App = () => {
             );
         }
     }, [selectedCountryOrRegion, arrayDataGroupByCountryOrRegion]);
+
+    useEffect(() => {
+        if (userCountryName !== "") {
+            for (const iterator of arrayDataGroupByCountryOrRegion) {
+                if (
+                    iterator[COLUMN_NAME_COUNTRY_OR_REGION].indexOf(
+                        userCountryName
+                    ) !== -1
+                ) {
+                    iterator[COLUMN_NAME_COUNTRY_OR_REGION] = 'You are in: ' + iterator[COLUMN_NAME_COUNTRY_OR_REGION].toUpperCase();
+                    setUserCountryData(iterator);
+                    break;
+                }
+            }
+        }
+    }, [userCountryName, arrayDataGroupByCountryOrRegion]);
 
     return (
         <div className="App">
@@ -154,33 +206,50 @@ const App = () => {
                     Data Repository by Johns Hopkins CSSE
                 </Link>
             </Alert>
-            {selectedCountryOrRegion !== "" ? (
-                <div>
-                    <SelectCustom
-                        selectedCountryOrRegion={selectedCountryOrRegion}
-                        handleChange={handleSelectChange}
-                        arrayCountryOrRegion={arrayCountryOrRegion}
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                    <GridCustom objectData={userCountryData} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <GridCustom objectData={worldData} />
+                </Grid>
+            </Grid>
+            <div>
+                <SelectCustom
+                    selectedCountryOrRegion={selectedCountryOrRegion}
+                    handleChange={handleSelectChange}
+                    arrayCountryOrRegion={arrayCountryOrRegion}
+                />
+                <DayPickerInputCustom
+                    handleBackButtonOnClick={handleBackButtonOnClick}
+                    handleDayChange={handleDayChange}
+                    selectedDay={selectedDay}
+                    handleForwardButtonOnClick={handleForwardButtonOnClick}
+                />
+            </div>
+
+            <Divider />
+
+            {selectedCountryOrRegion === "" && <div>LOADING ...</div>}
+
+            {selectedCountryOrRegion !== "" &&
+                selectedCountryOrRegion !== "ALL" && (
+                    <Grid item xs={12} md={12}>
+                        <GridCustom objectData={selectedCountryOrRegionData} />
+                    </Grid>
+                )}
+
+            {selectedCountryOrRegion !== "" &&
+                selectedCountryOrRegion === "ALL" &&
+                (arrayDataBySelectedCountryOrRegion.length !== 0 ? (
+                    <TableCustom
+                        arrayDataGroupByCountryOrRegion={
+                            arrayDataBySelectedCountryOrRegion
+                        }
                     />
-                    <DayPickerInputCustom
-                        handleBackButtonOnClick={handleBackButtonOnClick}
-                        handleDayChange={handleDayChange}
-                        selectedDay={selectedDay}
-                        handleForwardButtonOnClick={handleForwardButtonOnClick}
-                    />
-                    <Divider />
-                    {arrayDataBySelectedCountryOrRegion.length !== 0 ? (
-                        <TableCustom
-                            arrayDataGroupByCountryOrRegion={
-                                arrayDataBySelectedCountryOrRegion
-                            }
-                        />
-                    ) : (
-                        <h3>NO DATA</h3>
-                    )}
-                </div>
-            ) : (
-                <div>LOADING ...</div>
-            )}
+                ) : (
+                    <h3>NO DATA</h3>
+                ))}            
         </div>
     );
 };

@@ -1,8 +1,5 @@
 TODO:
 ----
-- Add Chip or Circle for data: Confirmed, Deaths, and Recovered
-- Get World's total data: Confirmed, Deaths, and Recovered
-- Check Styles and Responsibility with mobile
 - Get Country Flag
 - Add watched country to browser cache
 - Add international language supported
@@ -95,3 +92,18 @@ TODO:
 - How to use styled components with Material UI in a React app \
     - https://stackoverflow.com/questions/53768260/css-pseudo-selectors-with-material-ui \
     - https://www.sipios.com/blog-tech/how-to-use-styled-components-with-material-ui-in-a-react-app
+
+- Javascript reduce on array of objects \
+    - https://stackoverflow.com/questions/5732043/javascript-reduce-on-array-of-objects \
+    - https://appdividend.com/2018/12/18/javascript-array-reduce-example-array-prototype-reduce-tutorial/
+
+- map function for objects (instead of arrays) \
+    - https://stackoverflow.com/questions/7241878/for-in-loops-in-javascript-key-value-pairs
+    - https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
+
+- How to access the first property of an object in Javascript? \
+    - https://stackoverflow.com/questions/983267/how-to-access-the-first-property-of-an-object-in-javascript
+
+- CSS selectors \
+    - https://www.w3schools.com/cssref/css_selectors.asp \
+    - https://stackoverflow.com/questions/33421720/how-can-i-select-a-specific-instance-of-an-element-inside-a-div-using-css/33421754

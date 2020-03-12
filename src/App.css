@@ -37,6 +37,12 @@
   }
 }
 
+.DayPickerInput > input {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: x-large;
+  font-weight: bold;
+}
 
 td.tableCustomBody__tableCell {
   font-size: large;
