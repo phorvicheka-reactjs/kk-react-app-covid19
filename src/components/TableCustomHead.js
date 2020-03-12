@@ -20,7 +20,7 @@ const TableCustomHead = ({ arrayDataGroupByCountryOrRegion }) => {
                 {arrayDataGroupByCountryOrRegion.length !== 0
                     ? Object.keys(arrayDataGroupByCountryOrRegion[0]).map(
                           (value, index) => {
-                              return <TableCell classes={{root: classes.tableCustomHead__tableCell}} key={index}>{value}</TableCell>;
+                              return <TableCell padding="checkbox" classes={{root: classes.tableCustomHead__tableCell}} key={index}>{value}</TableCell>;
                           }
                       )
                     : null}

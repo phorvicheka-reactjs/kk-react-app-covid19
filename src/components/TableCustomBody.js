@@ -20,12 +20,12 @@ const TableCustomBody = ({ arrayDataGroupByCountryOrRegion }) => {
                       const row = [];
                       for (const index of Object.keys(value)) {
                           row.push(
-                              <TableCell className="tableCustomBody__tableCell" align="left" key={index}>
+                              <TableCell padding="checkbox" className="tableCustomBody__tableCell" align="left" key={index}>
                                   {value[index]}
                               </TableCell>
                           );
                       }
-                      return <TableRow key={index}>{row}</TableRow>;
+                      return <TableRow hover key={index}>{row}</TableRow>;
                   })
                 : null}
         </TableBody>
