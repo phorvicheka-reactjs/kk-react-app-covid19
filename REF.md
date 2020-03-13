@@ -1,7 +1,11 @@
 TODO:
 ----
-- Get Country Flag
-- Add watched country to browser cache
+- Button to toggle display result data as graph chart or table
+- Use mangodb or firestore to store extracted data so that no need to call method to read csv file and manipulate the data
+  - check if extracted data of the selected date is available on mangodb or firestore before read and manipulate the data
+- Add start/watched button for watched country using browser cache 
+  - we may need a custom render of the Autocomplete select list with the button start/watched
+  - we may need an array of object with properties: country_name and is_watched
 - Add international language supported
 - Add Graph data from date interval
 
