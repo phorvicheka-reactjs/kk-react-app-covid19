@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-import Papa from "papaparse";
 import TableCustom from "./components/TableCustom";
 import {
     URL_GITHUB_CSSE_COVID_19_DAILY_REPORTS,
-    URL_CSSE_COVID_19_DAILY_REPORTS,
     COLUMN_NAME_COUNTRY_OR_REGION,
     COLUMN_NAME_CONFIRMED,
     COLUMN_NAME_DEATHS,
@@ -69,23 +67,6 @@ const App = () => {
 
     const getCsvData = selectedDay => {
         const selectedDayString = formatDate(selectedDay, "MM-DD-YYYY");
-        /* Papa.parse(
-            `${URL_CSSE_COVID_19_DAILY_REPORTS}${selectedDayString}.csv`,
-            {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
-                error: function(err, file, inputElem, reason) {
-                    // executed if an error occurs while loading the file,
-                    // or if before callback aborted for some reason
-                    setSelectedCountryOrRegion("ALL");
-                    setData([]);
-                },
-                complete: function(results) {
-                    setData(results.data);
-                }
-            }
-        ); */
         const papaParsePromise = CsseCovid19DailyReportsUtils.papaParse(
             selectedDayString
         );

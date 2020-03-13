@@ -411,26 +411,6 @@ export const utilsCountries = (() => {
     };
 
     list.abbr = function abbr(name) {
-        /* if(abbrLookup[name.toLowerCase()]){
-          return abbrLookup[name.toLowerCase()];
-        }else {
-          let modifiedName = "";
-          console.log(Object.keys(abbrLookup));
-          for(let key of Object.keys(abbrLookup)) {
-            let keyStrValues = key.replace(",", "").split(" ")
-            let nameStrValues = name.toLowerCase().replace(",", "").split(" ");
-            let isAnyNameStrValuesExistedInKeyStrValues = keyStrValues.every((val) => nameStrValues.includes(val));
-            let isAnyKeyStrValuesExistedInNameStrValues = nameStrValues.every((val) => keyStrValues.includes(val));
-            if (
-                isAnyNameStrValuesExistedInKeyStrValues ||
-                isAnyKeyStrValuesExistedInNameStrValues
-            ) {
-                modifiedName = key;
-                break;
-            }
-          }
-          return abbrLookup[modifiedName];
-        }  */
         if (list.abbrs.indexOf(name.toUpperCase()) !== -1) {
             return list.abbrs[list.abbrs.indexOf(name.toUpperCase())];
         }
