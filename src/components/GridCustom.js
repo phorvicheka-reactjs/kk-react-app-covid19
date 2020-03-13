@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     }
 });
 
-const GridCustom = ({ objectData, isUserCountry }) => {
+const GridCustom = ({ objectData, isGlobal, isUserCountry }) => {
     const classes = useStyles();
     return (
         <Paper>
@@ -44,7 +44,8 @@ const GridCustom = ({ objectData, isUserCountry }) => {
                                       objectData[Object.keys(objectData)[0]]
                                   }_${index}`}
                               >
-                                  {isUserCountry ? (
+                                  {!isGlobal &&
+                                  utilsCountries.abbr(objectData[key]) ? (
                                       <img
                                           alt={objectData[key]}
                                           src={`https://www.countryflags.io/${utilsCountries.abbr(
@@ -52,10 +53,12 @@ const GridCustom = ({ objectData, isUserCountry }) => {
                                           )}/shiny/64.png`}
                                       />
                                   ) : (
-                                      <PublicOutlinedIcon
-                                          color="primary"
-                                          style={{ fontSize: 64 }}
-                                      />
+                                      isGlobal && (
+                                          <PublicOutlinedIcon
+                                              color="primary"
+                                              style={{ fontSize: 64 }}
+                                          />
+                                      )
                                   )}
                                   <Typography
                                       variant="h5"

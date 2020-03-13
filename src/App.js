@@ -18,8 +18,8 @@ import DayPickerInputCustom from "./components/DayPickerInputCustom";
 import { formatDate } from "react-day-picker/moment";
 import Grid from "@material-ui/core/Grid";
 import GridCustom from "./components/GridCustom";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import SelectCountryAutocomplet from "./components/SelectCountryAutocomplet";
+import DividerCustom from "./components/DividerCustom";
 
 const App = () => {
     const [data, setData] = useState([]);
@@ -205,17 +205,15 @@ const App = () => {
                         />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <GridCustom objectData={worldData} />
+                        <GridCustom objectData={worldData} isGlobal />
                     </Grid>
                 </Grid>
             )}
-            <div
-                style={{
-                    height: 5,
-                    marginTop: 20,
-                    backgroundColor: "lightgray"
-                }}
-            ></div>
+            <DividerCustom
+                height={5}
+                marginTop={20}
+                backgroundColor="lightgray"
+            />
             <div>
                 <h2 style={{ marginBottom: 0 }}>
                     DATE: {formatDate(selectedDay, "MM-DD-YYYY")}
@@ -226,30 +224,11 @@ const App = () => {
                     selectedDay={selectedDay}
                     handleForwardButtonOnClick={handleForwardButtonOnClick}
                 />
-                <Autocomplete
-                    style={{
-                        width: 300,
-                        marginBottom: 30,
-                        display: "inline-block"
-                    }}
-                    size="medium"
-                    autoSelect
-                    autoHighlight
-                    onChange={handleAutocompleteSelectChange}
-                    options={(() => {
-                        if (!arrayCountryOrRegion.includes("ALL")) {
-                            arrayCountryOrRegion.unshift("ALL");
-                        }
-                        return arrayCountryOrRegion;
-                    })()}
-                    renderInput={params => (
-                        <TextField
-                            {...params}
-                            label="Select Country/Region"
-                            margin="normal"
-                            variant="outlined"
-                        />
-                    )}
+                <SelectCountryAutocomplet
+                    handleAutocompleteSelectChange={
+                        handleAutocompleteSelectChange
+                    }
+                    countryList={arrayCountryOrRegion}
                 />
             </div>
 
