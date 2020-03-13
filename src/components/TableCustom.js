@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 const TableCustom = ({ arrayDataGroupByCountryOrRegion }) => {
     const classes = useStyles();
     return (
-        <Grid className={classes.tableContainer} xs={12} md={8}>
+        <Grid item className={classes.tableContainer} xs={12} md={8}>
             <TableContainer component={Paper}>
                 <Table
                     className={classes.table}

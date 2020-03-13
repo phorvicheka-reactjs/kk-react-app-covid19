@@ -1,3 +1,5 @@
+import Papa from "papaparse";
+
 export const URL_GITHUB_CSSE_COVID_19_DAILY_REPORTS =
     "https://github.com/CSSEGISandData/COVID-19";
 export const URL_CSSE_COVID_19_DAILY_REPORTS =
@@ -22,17 +24,34 @@ export const COLUMN_NAME_LATITUDE = "Latitude";
 export const COLUMN_NAME_LONGTITUDE = "Longitude";
 
 export class CsseCovid19DailyReportsUtils {
+    static papaParse(selectedDayString) {
+        return new Promise((resolve, reject) => {
+            Papa.parse(
+                `${URL_CSSE_COVID_19_DAILY_REPORTS}${selectedDayString}.csv`,
+                {
+                    download: true,
+                    header: true,
+                    skipEmptyLines: true,
+                    error: reject,
+                    complete: resolve
+                }
+            );
+        });
+    }
+
     static getArrayCountryOrRegion(data) {
-        let out =
+        let arrayCountryOrRegion =
             data.length !== 0
                 ? data.map(value => {
                       return value[COLUMN_NAME_COUNTRY_OR_REGION];
                   })
                 : [];
         //out = Array.from(new Set(out));
-        out = CsseCovid19DailyReportsUtils.removeDuplicates(out);
+        arrayCountryOrRegion = CsseCovid19DailyReportsUtils.removeDuplicates(
+            arrayCountryOrRegion
+        );
 
-        return out;
+        return arrayCountryOrRegion;
     }
 
     static getDataGroupByCountryOrRegion(data) {
@@ -40,6 +59,7 @@ export class CsseCovid19DailyReportsUtils {
         let arrayCountryOrRegion = CsseCovid19DailyReportsUtils.getArrayCountryOrRegion(
             data
         );
+        let arrayPushedCountryOrRegion = [];
 
         arrayCountryOrRegion.forEach(countryOrRegion => {
             let confirmed = 0;
@@ -48,9 +68,9 @@ export class CsseCovid19DailyReportsUtils {
             let dataCountryOrRegion = {};
             data.forEach(value => {
                 if (
-                    value[Object.keys(value)[1]].includes(countryOrRegion) ||
-                    countryOrRegion.includes(value[Object.keys(value)[1]])
-                    //value[Object.keys(value)[1]] === countryOrRegion
+                    /* value[Object.keys(value)[1]].includes(countryOrRegion) ||
+                    countryOrRegion.includes(value[Object.keys(value)[1]]) */
+                    value[Object.keys(value)[1]] === countryOrRegion
                 ) {
                     confirmed += Number(value[COLUMN_NAME_CONFIRMED]);
                     deaths += Number(value[COLUMN_NAME_DEATHS]);
@@ -63,18 +83,33 @@ export class CsseCovid19DailyReportsUtils {
                 [COLUMN_NAME_DEATHS]: deaths,
                 [COLUMN_NAME_RECOVERED]: recovered
             };
-            arrayDataGroupByCountryOrRegion.push(dataCountryOrRegion);
+
+            let isEmpty =
+                dataCountryOrRegion[COLUMN_NAME_CONFIRMED] === 0 &&
+                dataCountryOrRegion[COLUMN_NAME_DEATHS] === 0 &&
+                dataCountryOrRegion[COLUMN_NAME_RECOVERED] === 0;
+            if (
+                !isEmpty &&
+                !isEmpty &&
+                    !arrayPushedCountryOrRegion.includes(countryOrRegion)
+            ) {
+                arrayDataGroupByCountryOrRegion.push(dataCountryOrRegion);
+                arrayPushedCountryOrRegion.push(countryOrRegion);
+            }
         });
 
-        return { arrayCountryOrRegion, arrayDataGroupByCountryOrRegion };
+        return {
+            arrayCountryOrRegion: arrayPushedCountryOrRegion,
+            arrayDataGroupByCountryOrRegion
+        };
     }
 
-    static removeDuplicates(array) {
-        let a = [];
-        array.forEach(x => {
-            if (a.indexOf(x) === -1) a.push(x);
+    static removeDuplicates(arrayInput) {
+        let arrayOutput = [];
+        arrayInput.forEach(x => {
+            if (arrayOutput.indexOf(x) === -1) arrayOutput.push(x);
         });
 
-        return a;
+        return arrayOutput;
     }
 }

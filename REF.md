@@ -98,8 +98,9 @@ TODO:
     - https://appdividend.com/2018/12/18/javascript-array-reduce-example-array-prototype-reduce-tutorial/
 
 - map function for objects (instead of arrays) \
-    - https://stackoverflow.com/questions/7241878/for-in-loops-in-javascript-key-value-pairs
-    - https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
+    - https://stackoverflow.com/questions/7241878/for-in-loops-in-javascript-key-value-pairs \
+    - https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays \
+    - https://stackoverflow.com/questions/34913675/how-to-iterate-keys-values-in-javascript/34913701
 
 - How to access the first property of an object in Javascript? \
     - https://stackoverflow.com/questions/983267/how-to-access-the-first-property-of-an-object-in-javascript
@@ -107,3 +108,12 @@ TODO:
 - CSS selectors \
     - https://www.w3schools.com/cssref/css_selectors.asp \
     - https://stackoverflow.com/questions/33421720/how-can-i-select-a-specific-instance-of-an-element-inside-a-div-using-css/33421754
+
+- How to check whether multiple values exist within an Javascript array \
+    - https://stackoverflow.com/questions/9204283/how-to-check-whether-multiple-values-exist-within-an-javascript-array
+
+- Get loop counter/index using for…of syntax in JavaScript \
+    - https://stackoverflow.com/questions/10179815/get-loop-counter-index-using-for-of-syntax-in-javascript
+
+- Async JavaScript: From Callbacks, to Promises, to Async/Await \ 
+    - https://tylermcginnis.com/async-javascript-from-callbacks-to-promises-to-async-await/

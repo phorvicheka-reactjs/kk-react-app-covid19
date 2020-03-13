@@ -69,13 +69,12 @@ const App = () => {
 
     const getCsvData = selectedDay => {
         const selectedDayString = formatDate(selectedDay, "MM-DD-YYYY");
-        Papa.parse(
+        /* Papa.parse(
             `${URL_CSSE_COVID_19_DAILY_REPORTS}${selectedDayString}.csv`,
             {
                 download: true,
                 header: true,
                 skipEmptyLines: true,
-                // rest of config ...
                 error: function(err, file, inputElem, reason) {
                     // executed if an error occurs while loading the file,
                     // or if before callback aborted for some reason
@@ -86,7 +85,18 @@ const App = () => {
                     setData(results.data);
                 }
             }
+        ); */
+        const papaParsePromise = CsseCovid19DailyReportsUtils.papaParse(
+            selectedDayString
         );
+        papaParsePromise
+            .then(results => {
+                setData(results.data);
+            })
+            .catch(error => {
+                setSelectedCountryOrRegion("ALL");
+                setData([]);
+            });
     };
 
     useEffect(() => {
@@ -218,10 +228,17 @@ const App = () => {
                     </Grid>
                 </Grid>
             )}
-            <div style={{height: 5, marginTop: 20, backgroundColor: "lightgray"}}>
-            </div>            
+            <div
+                style={{
+                    height: 5,
+                    marginTop: 20,
+                    backgroundColor: "lightgray"
+                }}
+            ></div>
             <div>
-                <h2 style={{marginBottom: 0}}>DATE: {formatDate(selectedDay, "MM-DD-YYYY")}</h2>
+                <h2 style={{ marginBottom: 0 }}>
+                    DATE: {formatDate(selectedDay, "MM-DD-YYYY")}
+                </h2>
                 <DayPickerInputCustom
                     handleBackButtonOnClick={handleBackButtonOnClick}
                     handleDayChange={handleDayChange}
@@ -230,7 +247,7 @@ const App = () => {
                 />
                 <Autocomplete
                     style={{
-                        width: 250,
+                        width: 300,
                         marginBottom: 30,
                         display: "inline-block"
                     }}

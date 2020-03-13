@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Paper, Grid, Typography, Chip } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
+import { utilsCountries } from "./../utils/utilsCountries";
+import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
 
 const useStyles = makeStyles({
     gridCustom__chip: {
@@ -37,21 +39,37 @@ const GridCustom = ({ objectData, isUserCountry }) => {
                 ? Object.keys(objectData).map(function(key, index) {
                       if (index === 0) {
                           return (
-                              <Typography
-                                  variant="h5"
-                                  component="h2"
-                                  gutterBottom
-                                  color="primary"
+                              <div
                                   key={`${
                                       objectData[Object.keys(objectData)[0]]
                                   }_${index}`}
                               >
-                                  {isUserCountry
-                                      ? "You are in: " +
-                                        objectData[key].toUpperCase()
-                                      : objectData[key].toUpperCase()}
-                                  <Divider />
-                              </Typography>
+                                  {isUserCountry ? (
+                                      <img
+                                          alt={objectData[key]}
+                                          src={`https://www.countryflags.io/${utilsCountries.abbr(
+                                              objectData[key]
+                                          )}/shiny/64.png`}
+                                      />
+                                  ) : (
+                                      <PublicOutlinedIcon
+                                          color="primary"
+                                          style={{ fontSize: 64 }}
+                                      />
+                                  )}
+                                  <Typography
+                                      variant="h5"
+                                      component="h2"
+                                      gutterBottom
+                                      color="primary"
+                                  >
+                                      {isUserCountry
+                                          ? "You are in: " +
+                                            objectData[key].toUpperCase()
+                                          : objectData[key].toUpperCase()}
+                                      <Divider />
+                                  </Typography>
+                              </div>
                           );
                       } else {
                           let classSurfix = "";
