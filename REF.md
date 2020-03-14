@@ -121,3 +121,11 @@ TODO:
 
 - Async JavaScript: From Callbacks, to Promises, to Async/Await \ 
     - https://tylermcginnis.com/async-javascript-from-callbacks-to-promises-to-async-await/
+
+- Can generate React components with string style attribute \
+    - https://github.com/gregberge/svgr/issues/7 \
+    - https://jakearchibald.github.io/svgomg/ \
+    - https://www.flaticon.com/packs/emoji-6
+
+- Quick Tip: How to Sort an Array of Objects in JavaScript \
+    - https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/

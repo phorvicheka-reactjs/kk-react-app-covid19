@@ -5,6 +5,9 @@ import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 import { utilsCountries } from "./../utils/utilsCountries";
 import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
+import IconSkull from "./svg-icons/IconSkull";
+import IconSick from "./svg-icons/IconSick";
+import IconHappy from "./svg-icons/IconHappy";
 
 const useStyles = makeStyles({
     gridCustom__chip: {
@@ -89,24 +92,35 @@ const GridCustom = ({ objectData, isGlobal, isUserCountry }) => {
                                       objectData[Object.keys(objectData)[0]]
                                   }_${index}`}
                                   container
-                                  spacing={2}
+                                  spacing={3}
                                   alignItems="center"
                               >
                                   <Grid item xs={6} align="end">
                                       {key} :
                                   </Grid>
-                                  <Grid item xs={6} align="start">
-                                      <Chip
-                                          label={objectData[key]}
-                                          variant="outlined"
-                                          size="medium"
-                                          classes={{
-                                              root:
-                                                  classes[
-                                                      `gridCustom__chip${classSurfix}`
-                                                  ]
-                                          }}
-                                      />
+                                  <Grid item xs={6}>
+                                      <Grid
+                                          container
+                                          direction="row"
+                                          alignItems="center"
+                                      >
+                                          {index === 1 && (
+                                              <IconSick size={40} />
+                                          )}
+                                          {index === 2 && <IconSkull />}
+                                          {index === 3 && <IconHappy />}
+                                          <Chip
+                                              label={objectData[key]}
+                                              variant="outlined"
+                                              /* size="medium" */
+                                              classes={{
+                                                  root:
+                                                      classes[
+                                                          `gridCustom__chip${classSurfix}`
+                                                      ]
+                                              }}
+                                          />
+                                      </Grid>
                                   </Grid>
                               </Grid>
                           );

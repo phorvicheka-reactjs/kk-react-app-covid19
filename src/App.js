@@ -20,6 +20,8 @@ import Grid from "@material-ui/core/Grid";
 import GridCustom from "./components/GridCustom";
 import SelectCountryAutocomplet from "./components/SelectCountryAutocomplet";
 import DividerCustom from "./components/DividerCustom";
+import { arrayObjectDynamicSortingFunction } from './utils/utilsArray';
+
 
 const App = () => {
     const [data, setData] = useState([]);
@@ -111,7 +113,11 @@ const App = () => {
             );
         }
         setArrayCountryOrRegion(arrayCountryOrRegion);
-        setArrayDataGroupByCountryOrRegion(arrayDataGroupByCountryOrRegion);
+        setArrayDataGroupByCountryOrRegion(
+            arrayDataGroupByCountryOrRegion.sort(
+                arrayObjectDynamicSortingFunction(COLUMN_NAME_CONFIRMED, "desc")
+            )
+        );
 
         if (
             selectedCountryOrRegion !== "" &&
