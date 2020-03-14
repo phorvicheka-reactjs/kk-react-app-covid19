@@ -130,3 +130,8 @@ TODO:
 
 - Quick Tip: How to Sort an Array of Objects in JavaScript \
     - https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/
+
+
+- Create-react-app environments \
+    - https://medium.com/@tacomanator/environments-with-create-react-app-7b645312c09d \
+    - https://create-react-app.dev/docs/adding-custom-environment-variables/
