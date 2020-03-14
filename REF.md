@@ -1,5 +1,6 @@
 TODO:
 ----
+- Sorting & Selecting of table: https://material-ui.com/components/tables/#sorting-amp-selecting
 - Button to toggle display result data as graph chart or table
 - Use mangodb or firestore to store extracted data so that no need to call method to read csv file and manipulate the data
   - check if extracted data of the selected date is available on mangodb or firestore before read and manipulate the data
