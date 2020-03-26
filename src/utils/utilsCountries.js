@@ -444,7 +444,7 @@ export const utilsCountries = (() => {
         if (name === "Moldova" || name === "Republic of Moldova") {
             return abbrLookup["Moldova, Republic of".toLowerCase()];
         }
-        if (name === "Congo (Kinshasa)") {
+        if (name === "Congo (Kinshasa)" || name === "Congo (Brazzaville)") {
             return abbrLookup["Congo, Republic of the".toLowerCase()];
         }
         if (name === "Holy See" || name === "Vatican City") {
@@ -470,6 +470,24 @@ export const utilsCountries = (() => {
         }
         if (name === "Macau") {
             return abbrLookup["Macao".toLowerCase()];
+        }
+        if (name === "Tanzania") {
+            return abbrLookup["United Republic of Tanzania".toLowerCase()];
+        }
+        if (name === "Syria") {
+            return abbrLookup["Syrian Arab Republic".toLowerCase()];
+        }
+        if (name === "Cabo Verde") {
+            return abbrLookup["Cape Verde".toLowerCase()];
+        }
+        if (name === "Laos") {
+            return abbrLookup["Lao People's Democratic Republic".toLowerCase()];
+        }
+        if (name === "East Timor") {
+            return abbrLookup["Timor-Leste".toLowerCase()];
+        }
+        if (name.includes("Gambia")) {
+            return abbrLookup["Gambia".toLowerCase()];
         }
 
         return abbrLookup[name.toLowerCase()];

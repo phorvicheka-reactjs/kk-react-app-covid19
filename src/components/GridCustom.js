@@ -70,8 +70,7 @@ const GridCustom = ({ objectData, isGlobal, isUserCountry }) => {
                                       color="primary"
                                   >
                                       {isUserCountry
-                                          ? "You are in: " +
-                                            objectData[key].toUpperCase()
+                                          ? objectData[key].toUpperCase()
                                           : objectData[key].toUpperCase()}
                                       <Divider />
                                   </Typography>

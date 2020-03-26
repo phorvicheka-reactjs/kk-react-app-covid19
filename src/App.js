@@ -156,6 +156,17 @@ const App = () => {
             })
             .catch(error => {
                 console.log(error);
+                const userCountryName = "Cambodia";
+                setUserCountryName(userCountryName);
+                if (selectedCountryOrRegion === "") {
+                    if (arrayCountryOrRegion.indexOf(userCountryName) !== -1) {
+                        setSelectedCountryOrRegion(
+                            arrayCountryOrRegion[
+                            arrayCountryOrRegion.indexOf(userCountryName)
+                            ]
+                        );
+                    }
+                }
             });
     }, [arrayCountryOrRegion, selectedCountryOrRegion]);
 

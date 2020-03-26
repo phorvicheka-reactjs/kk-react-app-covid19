@@ -16,6 +16,7 @@ export const COLUMN_INDEX_LONGTITUDE = 6;
 
 export const COLUMN_NAME_PROVINCE_OR_STATE = "Province/State";
 export const COLUMN_NAME_COUNTRY_OR_REGION = "Country/Region";
+export const COLUMN_NAME_COUNTRY_OR_REGION_UNDERSCORE = "Country_Region";
 export const COLUMN_NAME_LAST_UPDATE = "Last Update";
 export const COLUMN_NAME_CONFIRMED = "Confirmed";
 export const COLUMN_NAME_DEATHS = "Deaths";
@@ -43,7 +44,7 @@ export class CsseCovid19DailyReportsUtils {
         let arrayCountryOrRegion =
             data.length !== 0
                 ? data.map(value => {
-                      return value[COLUMN_NAME_COUNTRY_OR_REGION];
+                      return value[COLUMN_NAME_COUNTRY_OR_REGION] || value[COLUMN_NAME_COUNTRY_OR_REGION_UNDERSCORE];
                   })
                 : [];
         //out = Array.from(new Set(out));
@@ -70,7 +71,8 @@ export class CsseCovid19DailyReportsUtils {
                 if (
                     /* value[Object.keys(value)[1]].includes(countryOrRegion) ||
                     countryOrRegion.includes(value[Object.keys(value)[1]]) */
-                    value[Object.keys(value)[1]] === countryOrRegion
+                    value[COLUMN_NAME_COUNTRY_OR_REGION] === countryOrRegion ||
+                    value[COLUMN_NAME_COUNTRY_OR_REGION_UNDERSCORE] === countryOrRegion
                 ) {
                     confirmed += Number(value[COLUMN_NAME_CONFIRMED]);
                     deaths += Number(value[COLUMN_NAME_DEATHS]);
